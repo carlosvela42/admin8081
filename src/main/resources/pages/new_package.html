@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head th:replace="/includes/header :: header"> </head>
+    <body class="sb-nav-fixed">
+         <nav th:replace="/includes/nav :: nav"> </nav>
+         <div id="layoutSidenav">
+            <div th:replace="/includes/sideNav :: sideNav"> </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid px-4">
+                        <h1 class="mt-4">Dashboard</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active">Dashboard</li>
+                        </ol>
+                        
+                    </div>
+                </main>
+                <div class="container">
+				    <div class="row">
+				      <div class="col-lg-10 col-xl-9 mx-auto">
+				        <div class="card card-signin flex-row my-5">
+				          <div class="card-img-left d-none d-md-flex">
+				             <!-- Background image for card set in CSS! -->
+				          </div>
+				          <div class="card-body">
+				            <h5 class="card-title text-center">Thêm gói cước</h5>
+				            <form class="form-signin" action="#" th:action="@{/savePackage}" th:object="${packages}"
+							method="post">
+				              <div class="form-label-group">
+				              
+				                <input type="text" id="inputName" class="form-control" placeholder="Tên gói cước" required="requỉred" autofocus="true" th:field="*{name}"></input>
+				               
+				              </div>
+				
+				              <div class="form-label-group">
+				                <input type="text" id="inputPrice" class="form-control" placeholder="Giá" required="requỉred" th:field="*{price}"></input>
+				               
+				              </div>
+				              
+				              <div class="form-label-group">
+				                <input type="text" id="inputCategory" class="form-control" placeholder="Thuộc danh mục" required="requỉred" th:field="*{category}"></input>
+				               
+				              </div>
+				              
+				              <div class="form-label-group">
+				                <input type="text" id="inputTime" class="form-control" placeholder="Thời hạn" required="requỉred" th:field="*{time}"></input>
+				                
+				              </div>
+				              
+				              <div class="form-label-group">
+				                <input type="text" id="inputCode" class="form-control" placeholder="Mã code" required="requỉred" th:field="*{code}"></input>
+				                
+				              </div>
+				              
+				              <div class="form-label-group">
+				                <input type="text" id="inputTemplate" class="form-control" placeholder="Template mail" required="requỉred" th:field="*{template}"></input>
+				               
+				              </div>
+			
+				              <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Thêm gói cước</button>
+				              
+				            </form>
+				          </div>
+				        </div>
+				      </div>
+				    </div>
+				  </div>
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; Your Website 2021</div>
+                            <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Terms &amp; Conditions</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        
+    </body>
+    <footer th:replace="/includes/footer :: footer"> </footer>
+</html>

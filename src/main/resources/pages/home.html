@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head th:replace="includes/header :: header"> </head>
+    <script th:inline="javascript">
+	/*<![CDATA[*/
+	
+	    var user = /*[[${user}]]*/ 'default';
+	    
+	
+	/*]]>*/
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			if(user.checkPass == '0'){
+				alert("Mật khẩu cũ nhập không đúng");
+			} else if(user.checkPass == '1'){
+				alert("Mật khẩu cập nhật thành công");
+			} else if(user.checkPass == '2'){
+				alert("Thông tin cơ bản cập nhật thành công");
+			} else if(user.checkPass == '3'){
+				alert("Machine id cập nhật thành công");
+			}
+			var cancelPackageId; 
+			$(document).on("click", "#cancelPackage", function () {
+				cancelPackageId = $(this).attr("data-id");
+				var name = $(this).attr("data-name");
+			     var price = $(this).attr("data-price");
+			     var paydate = $(this).attr("data-paydate");
+			     $("#name").text( name );
+			     $("#price").text( price );
+			     $("#paydate").text( paydate );
+			});
+			
+			$(document).on("click", '#cancelPackageBtn', function () {
+				
+				$.get( "/deletetPackage?id=" + cancelPackageId, function( data ) {    			  
+	    			  alert( "Hủy theo dõi thành công" );
+	    			});
+			});
+			
+			
+		});
+	</script>
+    <body class="sb-nav-fixed">
+        <nav th:replace="includes/nav :: nav"> </nav>
+        <div id="layoutSidenav">
+            <div th:replace="includes/sideNav :: sideNav"> </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid px-4">
+                        <div class="v49_2"><span class="v49_4">Tài khoản</span><div class="v61_32"></div><span class="v61_33">Thông tin gói</span><div class="v49_6"></div><span class="v53_2">Thông tin cơ bản</span>
+                        <form class="form-signin" action="#" th:action="@{/saveTables}" th:object="${user}"
+						method="post">
+	                        <span class="v55_4">Email</span>
+	                        <span class="v55_11">Số điện thoại</span>
+	                        <div class="name"></div>
+	                        <div class="name"></div>
+	                        <div class="name"></div>                   
+	                        <input type="hidden" id="inputId" class="form-control" placeholder="Id" th:field="*{id}"></input>
+				            <input class="v60_17 form-control" type="text" id="inputEmail" placeholder="Email" th:field="*{email}"></input>
+				            <input class="v60_18 form-control" type="text" id="inputPhone" placeholder="Phone" th:field="*{phone}"></input>
+	                        
+	                        <div class="v71_157">
+	                        	<button class="v61_25 btn btn-lg btn-block" type="submit">Cập nhật</button>
+	                        </div>
+	                        <div class="v71_158" data-toggle="modal" data-target="#exampleModal">
+	                        	<div class="v65_69"></div>
+	                        	<span class="v65_70">Đổi mật khẩu</span>
+	                        </div>
+                        </form>
+                        
+                        <div class="v65_14">
+	                        <span class="v65_15">Mã giảm giá</span>
+	                        <div th:each="cd : ${code}">
+		                        <span class="v65_16" th:text="${cd.name}"></span>
+		                        <br/>
+		                        <span class="v65_18">Số lượt sử dụng (lượt)</span>
+		                        
+		                        <span class="v65_20" th:text="${cd.usecount}"></span>
+		                        <br/>
+		                        <span class="v65_26">Thời gian</span>
+		                        <input class="v65_22" th:value="${cd.endDate}"></input>
+		                        <span class="v65_44">-</span>
+		                        <input class="v65_43"  th:value="${cd.startDate}"></input>
+		                  		<hr/>
+	                        </div>
+                        </div>
+                        <div class="name"></div>
+                        
+                        <div class="v71_136">
+                        <div th:each="product : ${products}">
+	                        <span class="v61_34" th:text="${product.packageName}"></span>
+	                        <br/>
+	                        <span class="v61_35">Số tiền thanh toán hàng tháng</span>
+	                        <span class="v61_57" th:text="${product.price}"></span>     
+	                        <br/>
+	                        <span class="v61_36">Kỳ thanh toán tiếp theo</span>
+	                        <span class="v61_58" th:text="${product.paydate}"></span>
+	                        <br/>
+	                        <div>
+		                        
+			                        <span class="v61_82">Machine ID</span>
+			                        <button class="btn btn-lg v65_61">Lưu</button>
+			                        <input class="v61_83" th:value="${product.machineId}"></input>
+			                     
+		                       
+	                        </div>
+	                       	
+	                        <div class="v65_62">
+		                        <button class="v61_25 btn btn-lg btn-block" type="submit">Thay đổi gói</button>
+		                        
+	                        </div>
+	                        <div class="v65_60">
+		                        <button class="v61_20 btn btn-lg btn-block" id="cancelPackage" type="submit" data-toggle="modal" data-target="#exampleModal2" th:attr="data-id=${product.id},data-name=${product.packageName},data-price=${product.price},data-paydate=${product.paydate}">Hủy theo dõi</button>
+	                        </div>
+	                        
+	                    </div>    
+                        </div>
+                        </div>
+                    </div>
+                </main>
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; Your Website 2021</div>
+                            <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Terms &amp; Conditions</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    
+		    <div class="modal-content">
+		    	<form class="form-signin" action="#" th:action="@{/changePass}" th:object="${user}" method="post">
+		    	<span class="v65_95">Thay đổi mật khẩu</span>
+		    	<br/>
+		    	<div class="v65_90">
+			    	<span class="v65_96">Mật khẩu cũ</span>
+			    	<input class="v65_101" th:field="*{oldPassword}"></input>
+		    	</div>
+		    	<br/>
+		    	<div class="v65_90">
+			    	<span class="v65_97">Mật khẩu mới</span>
+			    	<input class="v65_102" th:field="*{newPassword}"></input>
+		    	</div>
+		    	<br/>
+		    	<div class="v65_90">
+			    	<button type="submit" class="v65_105">Cập nhật</button>
+			    	<button class="v71_164" data-dismiss="modal">Quay lại</button>
+			    	
+		    	</div>
+		    	</form>
+		    </div>
+		  </div>
+		</div>
+		
+		<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    
+		    <div class="modal-content">
+		    	
+		    	<span class="v65_95">Hủy gói</span>
+		    	<hr/>
+		    	<div class="v65_90">
+			    	<span class="v65_96" id="name"></span>
+			    	
+		    	</div>
+		    	<br/>
+		    	<div>
+			    	<span class="v65_91">Số tiền thanh toán hàng tháng</span>
+			    	<span class="v65_92" id="price"></span>
+		    	</div>
+		    	<br/>
+		    	<div>
+			    	<span class="v65_91">Kỳ thanh toán tiếp theo</span>
+			    	<span class="v65_92" id="paydate"></span>
+		    	</div>
+		    	<hr/>
+		    	
+		    	<div class="v65_90">
+			    	<button type="submit" class="v65_93" id="cancelPackageBtn">Hủy theo dõi</button>
+			    	<button class="v71_164" data-dismiss="modal">Quay lại</button>
+			    	
+		    	</div>
+		    	
+		    </div>
+		  </div>
+		</div>
+    </body>
+    <footer th:replace="includes/footer :: footer"> </footer>
+</html>
