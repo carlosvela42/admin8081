@@ -31,6 +31,8 @@ public class Product {
 	
 	private String price;
 	
+	private String priceLocale;
+	
 	private String machineId;
 	
 	private String totalAmount;
@@ -154,6 +156,18 @@ public class Product {
 	public void setPrice(String price) {
 		this.price = price;
 	}
+
+	public String getPriceLocale() {
+		return priceLocale;
+	}
+
+
+
+	public void setPriceLocale(String priceLocale) {
+		this.priceLocale = priceLocale;
+	}
+
+
 
 	public String getMachineId() {
 		return machineId;

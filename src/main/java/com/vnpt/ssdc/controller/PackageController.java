@@ -24,8 +24,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.vnpt.ssdc.dto.Code;
 import com.vnpt.ssdc.dto.Packages;
 import com.vnpt.ssdc.dto.Product;
+import com.vnpt.ssdc.dto.Users;
 import com.vnpt.ssdc.service.PackagesService;
 import com.vnpt.ssdc.service.ProductService;
 
@@ -81,14 +83,5 @@ public class PackageController {
 		mav.addObject("packages", packages);
 		
 		return mav;
-	}
-    
-    @RequestMapping("/deletetPackage")
-	public ModelAndView deletetPackage(HttpServletRequest request) {
-    	packagesService.delete((Long.parseLong(request.getParameter("id"))));
-    	ModelAndView mav = new ModelAndView("packages");
-    	List<Packages> listPackages = packagesService.listAll();
-		mav.addObject("packages", listPackages);
-		return mav;		
 	}
 }

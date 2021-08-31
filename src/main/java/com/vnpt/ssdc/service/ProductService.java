@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
@@ -139,7 +140,8 @@ public class ProductService {
 				Product product = new Product();
 				product.setPackageName(rs.getString("CATEGORY") + " " + rs.getString("NAME"));
 				product.setPrice(rs.getString("PRICE"));
-				
+				Locale locale = new Locale("vi","VN");
+				product.setPriceLocale(String.format(locale, "%,d", Integer.parseInt(rs.getString("PRICE"))) );
 				Calendar c = Calendar.getInstance(); 
 				c.setTime(rs.getDate("PAY_DATE")); 
 				c.add(Calendar.DATE, Integer.parseInt(rs.getString("TIME")));

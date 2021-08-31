@@ -24,6 +24,8 @@ and open the template in the editor.
 				alert("Thông tin cơ bản cập nhật thành công");
 			} else if(user.checkPass == '3'){
 				alert("Machine id cập nhật thành công");
+			} else if(user.checkPass == '4'){
+				alert("Hủy theo dõi thành công");
 			}
 			var cancelPackageId; 
 			$(document).on("click", "#cancelPackage", function () {
@@ -31,19 +33,21 @@ and open the template in the editor.
 				var name = $(this).attr("data-name");
 			     var price = $(this).attr("data-price");
 			     var paydate = $(this).attr("data-paydate");
+			     $('#inputIdDelete').val(cancelPackageId);
 			     $("#name").text( name );
 			     $("#price").text( price );
 			     $("#paydate").text( paydate );
 			});
 			
-			$(document).on("click", '#cancelPackageBtn', function () {
+			$(document).on("click", ".v61_21", function () {
 				
-				$.get( "/deletetPackage?id=" + cancelPackageId, function( data ) {    			  
-	    			  alert( "Hủy theo dõi thành công" );
+				var name = $(this).attr("data-name");
+			     var endDate = $('#' + name + 'endDate').val();
+			     var startDate = $('#' + name + 'startDate').val();
+			     $.get( "/findCode?name=" + name + "&amp;endDate=" + endDate + "&amp;startDate=" + startDate, function( data ) {    			  
+			    	 $('#' + name).text(data);
 	    			});
 			});
-			
-			
 		});
 	</script>
     <body class="sb-nav-fixed">
@@ -53,7 +57,7 @@ and open the template in the editor.
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <div class="v49_2"><span class="v49_4">Tài khoản</span><div class="v61_32"></div><span class="v61_33">Thông tin gói</span><div class="v49_6"></div><span class="v53_2">Thông tin cơ bản</span>
+                        <div class="v49_2"><span class="v49_4">Tài khoản</span><div class="v49_6"></div><span class="v53_2">Thông tin cơ bản</span>
                         <form class="form-signin" action="#" th:action="@{/saveTables}" th:object="${user}"
 						method="post">
 	                        <span class="v55_4">Email</span>
@@ -69,35 +73,20 @@ and open the template in the editor.
 	                        	<button class="v61_25 btn btn-lg btn-block" type="submit">Cập nhật</button>
 	                        </div>
 	                        <div class="v71_158" data-toggle="modal" data-target="#exampleModal">
-	                        	<div class="v65_69"></div>
-	                        	<span class="v65_70">Đổi mật khẩu</span>
+	                        	<button class="v65_69 btn btn-lg btn-block" type="button">Đổi mật khẩu</button>
+	                        	
 	                        </div>
                         </form>
-                        
-                        <div class="v65_14">
-	                        <span class="v65_15">Mã giảm giá</span>
-	                        <div th:each="cd : ${code}">
-		                        <span class="v65_16" th:text="${cd.name}"></span>
-		                        <br/>
-		                        <span class="v65_18">Số lượt sử dụng (lượt)</span>
-		                        
-		                        <span class="v65_20" th:text="${cd.usecount}"></span>
-		                        <br/>
-		                        <span class="v65_26">Thời gian</span>
-		                        <input class="v65_22" th:value="${cd.endDate}"></input>
-		                        <span class="v65_44">-</span>
-		                        <input class="v65_43"  th:value="${cd.startDate}"></input>
-		                  		<hr/>
-	                        </div>
-                        </div>
+                                              
                         <div class="name"></div>
                         
                         <div class="v71_136">
-                        <div th:each="product : ${products}">
+                        <span class="v61_33">Thông tin gói</span>
+                        <div th:each="product : ${products}" class="v61_30">
 	                        <span class="v61_34" th:text="${product.packageName}"></span>
 	                        <br/>
 	                        <span class="v61_35">Số tiền thanh toán hàng tháng</span>
-	                        <span class="v61_57" th:text="${product.price}"></span>     
+	                        <span class="v61_57" th:text="${product.priceLocale}"></span>     
 	                        <br/>
 	                        <span class="v61_36">Kỳ thanh toán tiếp theo</span>
 	                        <span class="v61_58" th:text="${product.paydate}"></span>
@@ -112,14 +101,36 @@ and open the template in the editor.
 	                        </div>
 	                       	
 	                        <div class="v65_62">
-		                        <button class="v61_25 btn btn-lg btn-block" type="submit">Thay đổi gói</button>
+		                        <button class="v61_25 btn btn-lg btn-block" type="submit" onclick="location.href='http://orderflow.com.vn:8080/';">Thay đổi gói</button>
 		                        
 	                        </div>
 	                        <div class="v65_60">
-		                        <button class="v61_20 btn btn-lg btn-block" id="cancelPackage" type="submit" data-toggle="modal" data-target="#exampleModal2" th:attr="data-id=${product.id},data-name=${product.packageName},data-price=${product.price},data-paydate=${product.paydate}">Hủy theo dõi</button>
+		                        <button class="v61_20 btn btn-lg btn-block" id="cancelPackage" type="submit" data-toggle="modal" data-target="#exampleModal2" th:attr="data-id=${product.id},data-name=${product.packageName},data-price=${product.priceLocale},data-paydate=${product.paydate}">Hủy theo dõi</button>
 	                        </div>
 	                        
-	                    </div>    
+	                    </div>
+	                    
+	                     
+                        </div>
+                        <div class="v71_135">
+                        	<span class="v65_15">Mã giảm giá</span>
+	                        <div th:each="cd : ${code}">
+		                        <span class="v65_16" th:text="${cd.name}"></span>
+		                        <br/>
+		                        <span class="v65_18">Số lượt sử dụng (lượt)</span>
+		                        
+		                        <span class="v65_20" th:text="${cd.usecount}" th:id="${cd.name}"></span>
+		                        <br/>
+		                        <span class="v65_26">Thời gian</span>
+	
+		                        <input type="date" class="v65_22" th:id="${cd.name} + 'endDate'" th:value="${cd.endDate}"></input>
+		                        <span class="v65_44">-</span>
+		                        <input type="date" class="v65_43" th:id="${cd.name} + 'startDate'" th:value="${cd.startDate}"></input>
+		                        <br/>
+	                        	<button class="v61_25 v61_21 btn btn-lg btn-block" th:attr="data-name=${cd.name}">Tìm kiếm</button>
+		                        
+		                  		<hr/>
+	                        </div>   
                         </div>
                         </div>
                     </div>
@@ -189,7 +200,10 @@ and open the template in the editor.
 		    	<hr/>
 		    	
 		    	<div class="v65_90">
-			    	<button type="submit" class="v65_93" id="cancelPackageBtn">Hủy theo dõi</button>
+			    	<form class="form-signin" action="#" th:action="@{/deletetPackage}" th:object="${user}" method="post">
+			    		<input type="hidden" id="inputIdDelete" class="form-control" th:field="*{id}"></input>
+			    		<button type="submit" class="v65_93" id="cancelPackageBtn">Hủy theo dõi</button>
+			    	</form>
 			    	<button class="v71_164" data-dismiss="modal">Quay lại</button>
 			    	
 		    	</div>

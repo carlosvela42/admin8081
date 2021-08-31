@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.vnpt.ssdc.dto.Code;
@@ -88,5 +89,30 @@ public class CodeController {
 			mav.addObject("code", code);
 			
 			return mav;
+		}
+	    
+	    @RequestMapping("/findCode")
+	    @ResponseBody
+		public String findCode(HttpServletRequest request) throws UnsupportedEncodingException {
+	    	String requestDecode = URLDecoder.decode(request.getQueryString(), "UTF-8");
+	    	Map<String, String> requestMap = getQueryMap(requestDecode);
+	    	String code = codeService.findCode(requestMap.get("name"), requestMap.get("startDate"), requestMap.get("endDate"));  
+			return code;
+		}
+	    
+	    public static Map<String, String> getQueryMap(String query) {  
+		    String[] params = query.split("&amp;");  
+		    Map<String, String> map = new HashMap<String, String>();
+
+		    for (String param : params) {  
+		        String name = param.split("=")[0];
+		        String value = "";
+		        if(param.split("=").length > 1) {
+		        	value = param.split("=")[1]; 
+		        }
+		        
+		        map.put(name, value);  
+		    }  
+		    return map;  
 		}
 }

@@ -115,6 +115,25 @@ public class UserController {
 		return mav;
 	}
     
+    @RequestMapping("/deletetPackage")
+	public ModelAndView deletetPackage(@ModelAttribute("user") Users user) {
+    	packagesService.delete(user.getId());
+    	ModelAndView mav = new ModelAndView("home");
+    	List<Packages> listPackages = packagesService.listAll();
+		mav.addObject("packages", listPackages);
+		
+    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    	String currentPrincipalName = authentication.getName();
+		Users users = userService.selectByEmail(currentPrincipalName);
+		List<Product> products = service.selectByEmail(currentPrincipalName);
+		List<Code> code = codeService.listAll();
+		users.setCheckPass("4");
+		mav.addObject("user", users);
+		mav.addObject("code", code);
+		mav.addObject("products", products);
+		return mav;		
+	}
+    
     @RequestMapping("/editUser")
 	public ModelAndView editPackage(HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("edit_user");

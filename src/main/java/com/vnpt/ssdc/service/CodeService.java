@@ -59,7 +59,7 @@ public class CodeService {
 				code.setEmail(rs.getString("EMAIL"));
 				code.setUsecount(rs.getString("USECOUNT"));
 				Calendar cal = Calendar.getInstance();
-				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 				String now = sdf.format(cal.getTime());
 				code.setStartDate(now);
 				code.setEndDate(now);
@@ -116,6 +116,34 @@ public class CodeService {
 		} finally {
 			closeResource(con, pstm, rs);
 		}
+	}
+	
+	public String findCode(String name, String startDate, String endDate) {
+		List<Code> map = new ArrayList<Code>();
+		String sql = "select COUNT(*) COUNTCODE from MAP WHERE CODE = ? AND PAY_DATE >= ? AND PAY_DATE <= ? AND USER_ID in (SELECT ID FROM USERS WHERE EMAIL = ?)";
+		
+		Connection con = null;
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+		try {
+			con = JdbcTemplate.getDataSource().getConnection();
+			pstm = con.prepareStatement(sql);
+			pstm.setString(1, name);
+			pstm.setString(2, startDate);
+			pstm.setString(3, endDate);
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    	String currentPrincipalName = authentication.getName();
+			pstm.setString(4, currentPrincipalName);
+			rs = pstm.executeQuery();
+			while (rs.next()) {
+				return rs.getString("COUNTCODE");
+			}
+		} catch (Exception e) {
+
+		} finally {
+			closeResource(con, pstm, rs);
+		}
+		return "0";
 	}
 	
 	private void closeResource(Connection con, PreparedStatement pstm, ResultSet rs) {
