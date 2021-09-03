@@ -491,7 +491,7 @@ body {
   width: 375px;
   color: rgba(80,79,79,1);
   
-  margin-left: 48px;
+  padding-left: 48px;
   font-family: Roboto;
   font-weight: Bold;
   font-size: 24px;
