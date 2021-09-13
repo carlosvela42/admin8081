@@ -77,6 +77,13 @@ public class HomeController {
 		ModelAndView mav = new ModelAndView("home");
 		user.setCheckPass("2");
 		mav.addObject("user", user);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    	String currentPrincipalName = authentication.getName();
+		List<Product> products = service.selectByEmail(currentPrincipalName);
+		List<Code> code = codeService.listAll();
+		
+		mav.addObject("code", code);
+		mav.addObject("products", products);
 		return mav;
 	}
 }
