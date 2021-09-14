@@ -138,7 +138,7 @@ public class ProductService {
 			rs = pstm.executeQuery();
 			while (rs.next()) {				
 				Product product = new Product();
-				product.setPackageName(rs.getString("CATEGORY") + " " + rs.getString("NAME"));
+				product.setPackageName(rs.getString("NAME"));
 				product.setPrice(rs.getString("PRICE"));
 				Locale locale = new Locale("vi","VN");
 				product.setPriceLocale(String.format(locale, "%,d", Integer.parseInt(rs.getString("PRICE"))) );

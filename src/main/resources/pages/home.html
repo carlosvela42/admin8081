@@ -48,6 +48,12 @@ and open the template in the editor.
 			    	 $('#' + name).text(data);
 	    			});
 			});
+			
+			$('#cancelPackageBtn').click(function(){
+				$('#machineIdHidden').val($('#machineIdShow').val());
+				$('#idHiddenSave').val($('#idHidden').val());
+				$('#cancelPackageBtn1').click();
+			});
 		});
 	</script>
     <body class="sb-nav-fixed">
@@ -94,14 +100,19 @@ and open the template in the editor.
 	                        <div>
 		                        
 			                        <span class="v61_82">Machine ID</span>
-			                        <button class="btn btn-lg v65_61">Lưu</button>
-			                        <input class="v61_83" th:value="${product.machineId}"></input>
-			                     
-		                       
+			                        
+							    	<button type="submit" class="btn btn-lg v65_61" id="cancelPackageBtn">Lưu</button>			                        
+			                        <input class="v61_83" id="machineIdShow" th:value="${product.machineId}"></input>
+			                        <input type="hidden" id="idHidden" th:value="${product.id}"></input>  
+			                        <form class="form-signin" action="#" th:action="@{/saveMachineId}" th:object="${abc}" method="post">
+							    		<input type="hidden" id="idHiddenSave" th:field="*{id}"></input>
+							    		<input type="hidden" id="machineIdHidden" th:field="*{machineId}"></input>
+							    		<button type="submit" id="cancelPackageBtn1" style="display:none"></button>
+							    	</form>                     
 	                        </div>
 	                       	
 	                        <div class="v65_62">
-		                        <button class="v61_25 btn btn-lg btn-block" type="submit" onclick="location.href='https://orderflow.com.vn/';">Thay đổi gói</button>
+		                        <button class="v61_25 btn btn-lg btn-block" type="submit" onclick="window.open('https://orderflow.com.vn/');">Thay đổi gói</button>
 		                        
 	                        </div>
 	                        <div class="v65_60">

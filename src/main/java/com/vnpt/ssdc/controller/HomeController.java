@@ -56,6 +56,8 @@ public class HomeController {
 		mav.addObject("user", user);
 		mav.addObject("code", code);
 		mav.addObject("products", products);
+		Product abc = new Product();
+		mav.addObject("abc", abc);
 		return mav;
     }
     
@@ -84,6 +86,8 @@ public class HomeController {
 		
 		mav.addObject("code", code);
 		mav.addObject("products", products);
+		Product abc = new Product();
+		mav.addObject("abc", abc);
 		return mav;
 	}
 }
