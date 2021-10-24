@@ -118,6 +118,7 @@ public class UserController {
     @RequestMapping("/deletetPackage")
 	public ModelAndView deletetPackage(@ModelAttribute("user") Users user) {
     	packagesService.delete(user.getId());
+    	packagesService.updatePayment(user.getId());
     	ModelAndView mav = new ModelAndView("home");
     	List<Packages> listPackages = packagesService.listAll();
 		mav.addObject("packages", listPackages);

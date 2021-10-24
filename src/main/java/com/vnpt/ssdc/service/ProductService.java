@@ -126,7 +126,7 @@ public class ProductService {
 	}
 	
 	public List<Product> selectByEmail(String email) {
-		String sql = "select * from MAP LEFT JOIN USERS on USERS.ID = MAP.USER_ID LEFT JOIN PACKAGES on PACKAGES.ID = MAP.PACKAGE_ID WHERE USERS.EMAIL = ? AND MAP.IS_CANCEL = 'N'";
+		String sql = "select * from MAP LEFT JOIN USERS on USERS.ID = MAP.USER_ID LEFT JOIN PACKAGES on PACKAGES.ID = MAP.PACKAGE_ID LEFT JOIN PAYMENT on PAYMENT.MAP_ID = MAP.ID WHERE USERS.EMAIL = ? AND MAP.IS_CANCEL = 'N' AND (PAYMENT.STATUS = '1' || PAYMENT.STATUS = '2')";
 		Connection con = null;
 		PreparedStatement pstm = null;
 		ResultSet rs = null;

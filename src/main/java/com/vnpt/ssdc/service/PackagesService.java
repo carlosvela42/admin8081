@@ -174,7 +174,7 @@ public class PackagesService {
 	}
 	
 	public void delete(long id) {
-		String sql = "update MAP set IS_CANCEL = 'Y' WHERE ID = ?";
+		String sql = "update MAP set IS_CANCEL = 'Y', END_DATE = now() WHERE ID = ?";
 		Connection con = null;
 		PreparedStatement pstm = null;
 		ResultSet rs = null;
@@ -186,6 +186,29 @@ public class PackagesService {
 			pstm.setLong(1, id);
 			int updateCount = pstm.executeUpdate();	
 			System.out.print(updateCount);
+		} catch (Exception e) {
+			System.out.print(e);
+		} finally {
+			closeResource(con, pstm, rs);
+		}
+	}
+	
+	public void updatePayment(long id) {
+		String sql = "";
+		Connection con = null;
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+
+		try {
+
+			con = JdbcTemplate.getDataSource().getConnection();
+			sql = "update PAYMENT set STATUS = '3' WHERE MAP_ID = ?";
+			pstm = con.prepareStatement(sql);
+			pstm.setLong(1, id);
+
+			int updateCount = pstm.executeUpdate();
+			System.out.print(updateCount);
+
 		} catch (Exception e) {
 			System.out.print(e);
 		} finally {
